@@ -18,10 +18,11 @@ let progressSlider = document.querySelectorAll(".progress-slider");
 let halfImgSlider = document.querySelectorAll(".half_img-holo");
 let homeP = document.querySelector(".home-page");
 let main01 = document.getElementById("main_page");
-
+let redise = document.querySelector(".block-of-inf_holo");
+let abHolo = document.querySelector(".about_holo_inf");
 let inHm = document.querySelectorAll("#main_page > div");
-
-
+let adaptWidt = document.querySelectorAll(".home-wrap > section")
+let btnHoloSect = document.querySelector(".btn_holo-section_2")
 let outOfClassEditImgSliderCurrent = document.querySelector(".slider-img");
 // скорее всего будет не нужен, по айди,
 // где у тебя будут идти адреса изображений.
@@ -86,24 +87,41 @@ var wheelCounter = 0, bottomAnimateScroll, topAnimateScroll;
 function checkHide(e) {
   var delta = e.deltaY;
 
-  if(delta>0 && wheelCounter<4){
+  if(delta>0 && wheelCounter<adaptWidt.length){
     wheelCounter++;
-    bottomAnimateScroll = -screenHeight*wheelCounter;
-
-    changeHeightOurScreen.style.transform = "translate3d(" + " 0px," + bottomAnimateScroll + "px," + " 0px)";
-    changeHeightOurScreen.style.transition = "all 0.6s ease-in-out 0s";
-    console.log(bottomAnimateScroll + " ", wheelCounter);
+    if(remthisChange>=1){
+      bottomAnimateScroll = -screenHeight*wheelCounter;
+      changeHeightOurScreen.style.transform = "translate3d(" + " 0px," + bottomAnimateScroll + "px," + " 0px)";
+      changeHeightOurScreen.style.transition = "all 0.6s ease-in-out 0s";
+      console.log(bottomAnimateScroll + " ", wheelCounter);
+    }else{
+      bottomAnimateScroll = -mobileWidt*wheelCounter;
+      changeHeightOurScreen.style.transform = "translate3d(" + " 0vh," + bottomAnimateScroll + "vh," + " 0vh)";
+      changeHeightOurScreen.style.transition = "all 0.6s ease-in-out 0s";
+      console.log(bottomAnimateScroll);
+    }
   }
   else if(delta<0 && wheelCounter!=0){
     wheelCounter--;
-    topAnimateScroll = bottomAnimateScroll + screenHeight;
-    bottomAnimateScroll = topAnimateScroll;
+    if(remthisChange>=1){
+      topAnimateScroll = bottomAnimateScroll + screenHeight;
+      bottomAnimateScroll = topAnimateScroll;
 
-    changeHeightOurScreen.style.transform = "translate3d(" + " 0px," + topAnimateScroll + "px," + " 0px)";
-    changeHeightOurScreen.style.transition = "all 0.6s ease-in-out 0s";
-    console.log(topAnimateScroll + " ", wheelCounter);
+      changeHeightOurScreen.style.transform = "translate3d(" + " 0px," + topAnimateScroll + "px," + " 0px)";
+      changeHeightOurScreen.style.transition = "all 0.6s ease-in-out 0s";
+      console.log(topAnimateScroll + " ", wheelCounter);
+    }else{
+      topAnimateScroll = bottomAnimateScroll + mobileWidt;
+      bottomAnimateScroll = topAnimateScroll;
+
+      changeHeightOurScreen.style.transform = "translate3d(" + " 0vh," + topAnimateScroll + "vh," + " 0vh)";
+      changeHeightOurScreen.style.transition = "all 0.6s ease-in-out 0s";
+      console.log(topAnimateScroll + " ", wheelCounter);
+    }
   }
-
+//  mobileWidt = 100vh
+//  adaptWidt
+//  remthisChange = wd/hg
 }
 
 hideRoot.addEventListener("wheel", checkHide);
@@ -132,12 +150,22 @@ home_bt.addEventListener("click", thisPageBtnNav);
 
 var screenWidth = window.screen.width;
 var screenHeight = window.screen.height;
-var remthisChange = screenWidth/screenHeight;
 
-changeHeightOurScreen.style.height = screenHeight + "px";
+var remthisChange = screenWidth/screenHeight;
+var mobileWidt = 100;
+
+function editVh() {
+  if (remthisChange>=1) {
+    changeHeightOurScreen.style.height = screenHeight + "px";
+  }else{
+    changeHeightOurScreen.style.height = mobileWidt + "vh";
+  }
+}
+
+window.addEventListener("load", editVh);
 
 function soWidthHeight() {
-  if(remthisChange<1.4){
+  if(remthisChange<1.7 && remthisChange>1){
     main01.removeChild(pomPomMainPage);
     var dv = document.createElement("div");
     homeP.prepend(dv);
@@ -148,6 +176,20 @@ function soWidthHeight() {
         trT[i].appendChild(inHm[j]);
       }
     }
+    // for(var k = 0; k<trT.length; k++)
+      // trT[k].style.background = "url(./background-img/section_1/main.png)";
+  }else if(remthisChange<1){
+    main01.removeChild(pomPomMainPage);
+    var dv = document.createElement("div");
+    homeP.prepend(dv);
+    dv.classList.add("ad-mb-wd-h_2");
+    var trT =  document.getElementsByClassName("ad-mb-wd-h_2");
+    for(var i = 0; i<trT.length; i++){
+      for(var j = 0; j<inHm.length; j++){
+        trT[i].appendChild(inHm[j]);
+      }
+    }
+
   }
 }
 
@@ -161,15 +203,14 @@ function leftRightAnimateMainImg() {
 window.addEventListener("load", leftRightAnimateMainImg);
 
 function setWidth() {
-  // editWimageSection_2.style.width = screenWidth/3 + "px";
-  editWimageSection_2.style.width = screenWidth/3 + "px";
-  // крч то че сверху, адаптируй как только идет не ноут, а
-  // хуйня на телефоне, чтобы определялась по другой формул, уже
-  // под телефоны без медийки и изи пизи
-
-  // чел реально через js по лоаду адаптирует параметры xd
-  // крч, слайд кнопки тоже изменять для телефонов. а иначе
-  // пизда твоей версточке сыночек
+  if(remthisChange>=1){
+    editWimageSection_2.style.width = screenWidth/3 + "px";
+  }else{
+    redise.style.flexDirection = "column";
+    abHolo.style.paddingTop = "10px";
+    btnHoloSect.style.marginTop = "5px";
+    editWimageSection_2.style.width = "auto";
+  }
 }
 
 window.addEventListener("load", setWidth);
