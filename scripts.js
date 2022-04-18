@@ -16,6 +16,10 @@ let leftSlideBtn = document.querySelector(".left-slide");
 let rightSlideBtn = document.querySelector(".right-slide");
 let progressSlider = document.querySelectorAll(".progress-slider");
 let halfImgSlider = document.querySelectorAll(".half_img-holo");
+let homeP = document.querySelector(".home-page");
+let main01 = document.getElementById("main_page");
+
+let inHm = document.querySelectorAll("#main_page > div");
 
 
 let outOfClassEditImgSliderCurrent = document.querySelector(".slider-img");
@@ -56,7 +60,6 @@ function appearNavBox() {
 
 home_bt.addEventListener("click", appearNavBox);
 // по фиксить фиксики быстро блять
-console.log(preloaderAnimate);
 
 
 // не работает :AD:
@@ -129,21 +132,30 @@ home_bt.addEventListener("click", thisPageBtnNav);
 
 var screenWidth = window.screen.width;
 var screenHeight = window.screen.height;
+var remthisChange = screenWidth/screenHeight;
 
 changeHeightOurScreen.style.height = screenHeight + "px";
 
-function backgroundSectionVideo() {
-  var thisVideo = document.createElement("video");
-  var sourceVideo = document.createElement("video");
-  thisVideo.setAttribute("id", "video");
-  sourceVideo.src = "https://www.youtube.com/watch?v=3RxlzJWWzdY";
-  thisVideo.appendChild(sourceVideo);
+function soWidthHeight() {
+  if(remthisChange<1.4){
+    main01.removeChild(pomPomMainPage);
+    var dv = document.createElement("div");
+    homeP.prepend(dv);
+    dv.classList.add("ad-mb-wd-h");
+    var trT =  document.getElementsByClassName("ad-mb-wd-h");
+    for(var i = 0; i<trT.length; i++){
+      for(var j = 0; j<inHm.length; j++){
+        trT[i].appendChild(inHm[j]);
+      }
+    }
+  }
 }
 
-window.addEventListener("load", backgroundSectionVideo);
+window.addEventListener("load", soWidthHeight);
+
 
 function leftRightAnimateMainImg() {
-  pomPomMainPage.style.transform = "translate(-49%, 0%)";
+  pomPomMainPage.style.transform = "translate(-49%, 1%)";
 }
 
 window.addEventListener("load", leftRightAnimateMainImg);
@@ -164,12 +176,13 @@ window.addEventListener("load", setWidth);
 
 
 function slideWidthHeightBtn() {
-  leftSlideBtn.style.width = screenWidth/12 + "px";
-  leftSlideBtn.style.height = screenHeight/6 + "px";
+  if(remthisChange>1.4){
+    leftSlideBtn.style.width = screenWidth/12 + "px";
+    leftSlideBtn.style.height = screenHeight/6 + "px";
 
-  rightSlideBtn.style.width = screenWidth/12 + "px";
-  rightSlideBtn.style.height = screenHeight/6 + "px";
-
+    rightSlideBtn.style.width = screenWidth/12 + "px";
+    rightSlideBtn.style.height = screenHeight/6 + "px";
+  }
   // для прелоадера, а точнее для рута,
   // раскрываю рут => дизейблю прелоад по лоаду и раскрываю че снизу
   // window.addEventListener("load", animationMultitypeImg);
@@ -177,16 +190,39 @@ function slideWidthHeightBtn() {
 
 window.addEventListener("load", slideWidthHeightBtn);
 
+function slideWidthHeightBtnAdaptiveMobile() {
+  if(remthisChange<1.4){
+    leftSlideBtn.style.width = screenWidth/6 + "px";
+    leftSlideBtn.style.height = screenHeight/12 + "px";
+
+    rightSlideBtn.style.width = screenWidth/6 + "px";
+    rightSlideBtn.style.height = screenHeight/12 + "px";
+  }
+}
+
+window.addEventListener("load", slideWidthHeightBtnAdaptiveMobile);
+
 
 function sliderImgWidthHeight() {
-  outOfClassEditImgSliderCurrent.style.width = screenWidth/3 + "px";
-  outOfClassEditImgSliderCurrent.style.height = screenHeight/1.5 + "px";
-
+  if(remthisChange>1.4){
+    outOfClassEditImgSliderCurrent.style.width = screenWidth/3 + "px";
+    outOfClassEditImgSliderCurrent.style.height = screenHeight/1.5 + "px";
+  }
 // все че не ноут или монитор
 // другая формула под телефоны
 }
 
 window.addEventListener("load", sliderImgWidthHeight);
+
+
+function sliderImgWidthHeightAdaptiveMobile() {
+  if(remthisChange<1.4){
+    outOfClassEditImgSliderCurrent.style.width = screenWidth/1 + "px";
+    outOfClassEditImgSliderCurrent.style.height = screenHeight/2 + "px";
+    }
+}
+
+window.addEventListener("load", sliderImgWidthHeightAdaptiveMobile);
 
 
 function progressSlider_w() {
@@ -208,6 +244,50 @@ function halfimgFix() {
 window.addEventListener("load", halfimgFix);
 
 
-function sliders() {
+function slidersAnimate() {
+  var rem_img = ["./waifus-slider/wf_1.png", "./waifus-slider/wf_2.png", "./waifus-slider/wf_3.png"]
+  var obj_imj = [];
+  for(var count = 0; count<rem_img.length; count++){
+    obj_imj[count] = new Image();
+    obj_imj[count].src = rem_img[count];
+    if(count>0){
+      obj_imj[count].style.position = "absolute";
+      obj_imj[count].style.opacity = "0";
+    }
 
+    rightMove(count, obj_imj);
+
+    // leftMove(count, obj_imj);
+
+    outOfClassEditImgSliderCurrent.appendChild(obj_imj[count]);
+    // console.log(obj_imj);
+  }
+  // sliderAnimateManyImg
 }
+
+window.addEventListener("load", slidersAnimate);
+
+
+function rightMove(counter, imges) {
+  // obj_imj[count].style.opacity = "absolute";
+  // obj_imj[count].style.opacity = "0";
+  // return obj_imj[++count];
+  console.log(counter + "\n", imges);
+}
+
+// function rightMove(counter, imges) {
+//   if(counter>0){
+//     // imges.classList.add("shluchi");
+//     imges[counter].style.opacity = "1";
+//   }
+// }
+
+rightSlideBtn.addEventListener("click", rightMove);
+
+// rightSlideBtn.addEventListener("click", rightMove);
+
+// function leftMove(count, obj_imj) {
+//
+// }
+//
+// leftSlideBtn.addEventListener("click", leftMove);
