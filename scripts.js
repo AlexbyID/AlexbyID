@@ -6,7 +6,7 @@ let finddamnclass = document.querySelector("#page-nav-active");
 let thisPageNav = document.getElementById("current_page");
 let checkRotate = document.querySelector(".home");
 let checkPagenavActiveMybad = document.querySelector(".mybad");
-let checkHomeMainHref = document.querySelector(".btn-nav > a");
+let checkHomeMainHref = document.querySelectorAll(".btn-nav > a");
 let changeSvgColorSelector = document.querySelector(".btn-nav");
 let findSection = document.body.querySelector("section");
 let changeHeightOurScreen = document.querySelector(".home-wrap");
@@ -24,10 +24,12 @@ let inHm = document.querySelectorAll("#main_page > div");
 let adaptWidt = document.querySelectorAll(".home-wrap > section")
 let btnHoloSect = document.querySelector(".btn_holo-section_2")
 let outOfClassEditImgSliderCurrent = document.querySelector(".slider-img");
+let allCurrenPage = document.querySelectorAll(".btn-nav");
 // скорее всего будет не нужен, по айди,
 // где у тебя будут идти адреса изображений.
 // берешь айди и крутишь вертишь, ебешь
 // че хочешь делай
+let allHoverBtn = document.querySelectorAll(".btn-nav")
 
 let hideRoot = document.querySelector("html");
 
@@ -139,14 +141,19 @@ function onloadStylePutWheel() {
 window.addEventListener("beforeunload", onloadStylePutWheel);
 
 function thisPageBtnNav() {
-  var thisLoc = window.location.href;
-  var homePageLoc = checkHomeMainHref.href;
-  if(homePageLoc == thisLoc){
-    changeSvgColorSelector.classList.add("ch-svg");
+  var thisLoc = document.location.href;
+  for(var i = 0; i<checkHomeMainHref.length; i++){
+
+    if(thisLoc[i].includes(checkHomeMainHref[i].getAttribute("href"))==false && remthisChange>=1){
+        allCurrenPage[i].classList.add("ch-svg");
+    }else if(thisLoc[i].includes(checkHomeMainHref[i].getAttribute("href"))==false && remthisChange<1){
+      allCurrenPage[i].classList.add("ch-svg_2");
+    }
+
   }
 }
 
-home_bt.addEventListener("click", thisPageBtnNav);
+window.addEventListener("load", thisPageBtnNav);
 
 var screenWidth = window.screen.width;
 var screenHeight = window.screen.height;
@@ -324,6 +331,50 @@ function rightMove(counter, imges) {
 // }
 
 rightSlideBtn.addEventListener("click", rightMove);
+
+
+
+for(let counterI = 0; counterI<allHoverBtn.length; counterI++){
+  allHoverBtn[counterI].onmouseover = function () {
+    if(allHoverBtn[counterI].classList=="btn-nav ch-svg" || allHoverBtn[counterI].classList=="btn-nav ch-svg_2");
+    else{
+      allHoverBtn[counterI].style.cssText = "";
+      if(remthisChange>=1)
+        allHoverBtn[counterI].classList.add("hover-filtr");
+      else
+        allHoverBtn[counterI].classList.add("hover-filtr_2");
+    }
+  }
+  allHoverBtn[counterI].onmouseout = function () {
+    if(allHoverBtn[counterI].classList=="btn-nav ch-svg" || allHoverBtn[counterI].classList=="btn-nav ch-svg_2");
+    else{
+      allHoverBtn[counterI].style.filter = "invert(100%) sepia(0%) saturate(0%) hue-rotate(4deg) brightness(112%) contrast(101%)";
+      if(remthisChange>=1)
+        allHoverBtn[counterI].classList.remove("hover-filtr");
+      else
+        allHoverBtn[counterI].classList.remove("hover-filtr_2");
+    }
+  }
+  allHoverBtn[counterI].onmousedown = function () {
+    if(allHoverBtn[counterI].classList=="btn-nav ch-svg" || allHoverBtn[counterI].classList=="btn-nav ch-svg_2");
+    else{
+      if(remthisChange>=1)
+        allHoverBtn[counterI].classList.add("hover-filtr");
+      else
+        allHoverBtn[counterI].classList.add("hover-filtr_2");
+    }
+  }
+}
+
+function svgVirginColor() {
+  for(var i = 0; i<allHoverBtn.length; i++){
+    if(allHoverBtn[i].classList=="btn-nav ch-svg" || allHoverBtn[i].classList=="btn-nav ch-svg_2");
+    else
+      allHoverBtn[i].style.filter = "invert(100%) sepia(0%) saturate(0%) hue-rotate(4deg) brightness(112%) contrast(101%)";
+  }
+}
+
+window.addEventListener("load", svgVirginColor);
 
 // rightSlideBtn.addEventListener("click", rightMove);
 
