@@ -21,20 +21,17 @@ let main01 = document.getElementById("main_page");
 let redise = document.querySelector(".block-of-inf_holo");
 let abHolo = document.querySelector(".about_holo_inf");
 let inHm = document.querySelectorAll("#main_page > div");
-let adaptWidt = document.querySelectorAll(".home-wrap > section")
-let btnHoloSect = document.querySelector(".btn_holo-section_2")
+let adaptWidt = document.querySelectorAll(".home-wrap > section");
+let btnHoloSect = document.querySelector(".btn_holo-section_2");
 let outOfClassEditImgSliderCurrent = document.querySelector(".slider-img");
 let allCurrenPage = document.querySelectorAll(".btn-nav");
-// скорее всего будет не нужен, по айди,
-// где у тебя будут идти адреса изображений.
-// берешь айди и крутишь вертишь, ебешь
-// че хочешь делай
+
+
 let allHoverBtn = document.querySelectorAll(".btn-nav")
 
 let hideRoot = document.querySelector("html");
 
-// есл получится прелоадер
-let preloaderAnimate = document.querySelector(".preloader-w");
+
 
 
 function appearNavBox() {
@@ -62,42 +59,27 @@ function appearNavBox() {
 }
 
 home_bt.addEventListener("click", appearNavBox);
-// по фиксить фиксики быстро блять
 
 
-// не работает :AD:
-// убрать, как поймешь как сделать прелоадер, STAREGE
-// function animationMultitypeImg() {
-//
-//   let request;
-//   request = requestAnimationFrame(performRequest);
-//
-//   var readImgAnimate = ["./img-preloader/preload_1.jpg","./img-preloader/preload_2.jpg",
-//                         "./img-preloader/preload_3.jpg","./img-preloader/preload_4.jpg",
-//                         "./img-preloader/preload_5.jpg","./img-preloader/preload_6.jpg"];
-//   var objArrayImage = [];
-//   for(let count = 0, countAdress = readImgAnimate.length; count<countAdress; count++){
-//     objArrayImage[count] = new Image();
-//     objArrayImage[count].src = readImgAnimate[count];
-//   }
-//
-//   requestAnimationFrame(animationMultitypeImg);
-//   cancelAnimationFrame(request);
-// }
-var wheelCounter = 0, bottomAnimateScroll, topAnimateScroll;
+
+
+
+var wheelCounter = 0, bottomAnimateScroll = 0, topAnimateScroll = 0, swipeTranslate = 0;
 
 function checkHide(e) {
   var delta = e.deltaY;
-
+  console.log(delta);
   if(delta>0 && wheelCounter<adaptWidt.length){
     wheelCounter++;
     if(remthisChange>=1){
       bottomAnimateScroll = -screenHeight*wheelCounter;
+      swipeTranslate = 0;
       changeHeightOurScreen.style.transform = "translate3d(" + " 0px," + bottomAnimateScroll + "px," + " 0px)";
       changeHeightOurScreen.style.transition = "all 0.6s ease-in-out 0s";
       console.log(bottomAnimateScroll + " ", wheelCounter);
     }else{
       bottomAnimateScroll = -mobileWidt*wheelCounter;
+      swipeTranslate = 0;
       changeHeightOurScreen.style.transform = "translate3d(" + " 0vh," + bottomAnimateScroll + "vh," + " 0vh)";
       changeHeightOurScreen.style.transition = "all 0.6s ease-in-out 0s";
       console.log(bottomAnimateScroll);
@@ -106,14 +88,15 @@ function checkHide(e) {
   else if(delta<0 && wheelCounter!=0){
     wheelCounter--;
     if(remthisChange>=1){
-      topAnimateScroll = bottomAnimateScroll + screenHeight;
+      topAnimateScroll = bottomAnimateScroll + screenHeight + swipeTranslate;
+      swipeTranslate = 0;
       bottomAnimateScroll = topAnimateScroll;
-
       changeHeightOurScreen.style.transform = "translate3d(" + " 0px," + topAnimateScroll + "px," + " 0px)";
       changeHeightOurScreen.style.transition = "all 0.6s ease-in-out 0s";
       console.log(topAnimateScroll + " ", wheelCounter);
     }else{
-      topAnimateScroll = bottomAnimateScroll + mobileWidt;
+      topAnimateScroll = bottomAnimateScroll + mobileWidt + swipeTranslate;
+      swipeTranslate = 0;
       bottomAnimateScroll = topAnimateScroll;
 
       changeHeightOurScreen.style.transform = "translate3d(" + " 0vh," + topAnimateScroll + "vh," + " 0vh)";
@@ -121,39 +104,73 @@ function checkHide(e) {
       console.log(topAnimateScroll + " ", wheelCounter);
     }
   }
-//  mobileWidt = 100vh
-//  adaptWidt
-//  remthisChange = wd/hg
 }
 
 hideRoot.addEventListener("wheel", checkHide);
 
-function onloadStylePutWheel() {
-  if (history.scrollRestoration) {
-      history.scrollRestoration = 'manual';
-  } else {
-      window.onbeforeunload = function () {
-          window.scrollTo(0, 0);
+
+
+function animateTrthis() {
+  console.log("work");
+  for(var i = 0; i <checkHomeMainHref.length; i++){
+    var newstr = checkHomeMainHref[i].getAttribute("href").replace(/#/, "");
+    for(var j = 0; j<adaptWidt.length; j++){
+      console.log(adaptWidt[j].getAttribute("class").includes(newstr));
+      if((adaptWidt[j].getAttribute("class").includes(newstr))){
+        var trickCount = j;
+        checkHomeMainHref[i].onclick = function clickTranslate() {
+          wheelCounter = trickCount;
+          // var newHeight = window.screen.height;
+          if(remthisChange>=1){
+            swipeTranslate = -screenHeight*wheelCounter;
+            console.log(wheelCounter);
+            changeHeightOurScreen.style.transform = "translate3d(" + " 0px," + swipeTranslate + "px," + " 0px)";
+            changeHeightOurScreen.style.transition = "all 0.6s ease-in-out 0s";
+          }else{
+            swipeTranslate = -mobileWidt*wheelCounter;
+            changeHeightOurScreen.style.transform = "translate3d(" + " 0vh," + swipeTranslate + "vh," + " 0vh)";
+            changeHeightOurScreen.style.transition = "all 0.6s ease-in-out 0s";
+          }
+        }
       }
+    }
+  }
+}
+
+checkRotate.addEventListener("click", animateTrthis);
+
+
+function onloadStylePutWheel() {
+  if(history.scrollRestoration)
+    history.scrollRestoration = 'manual';
+  else{
+    window.onbeforeunload = function () {
+      window.scrollTo(0, 0);
+    }
   }
 }
 
 window.addEventListener("beforeunload", onloadStylePutWheel);
 
-function thisPageBtnNav() {
-  var thisLoc = document.location.href;
-  for(var i = 0; i<checkHomeMainHref.length; i++){
 
-    if(thisLoc[i].includes(checkHomeMainHref[i].getAttribute("href"))==false && remthisChange>=1){
-        allCurrenPage[i].classList.add("ch-svg");
-    }else if(thisLoc[i].includes(checkHomeMainHref[i].getAttribute("href"))==false && remthisChange<1){
-      allCurrenPage[i].classList.add("ch-svg_2");
-    }
 
-  }
-}
 
-window.addEventListener("load", thisPageBtnNav);
+
+// function thisPageBtnNav() {
+//   var thisLoc = document.location.href;
+//   for(var i = 0; i<checkHomeMainHref.length; i++){
+//
+//     if(thisLoc[i].includes(checkHomeMainHref[i].getAttribute("href"))==false && remthisChange>=1)
+//       allCurrenPage[i].classList.add("ch-svg");
+//     else if(thisLoc[i].includes(checkHomeMainHref[i].getAttribute("href"))==false && remthisChange<1)
+//       allCurrenPage[i].classList.add("ch-svg_2");
+//   }
+// }
+//
+// window.addEventListener("load", thisPageBtnNav);
+
+
+
 
 var screenWidth = window.screen.width;
 var screenHeight = window.screen.height;
@@ -161,15 +178,23 @@ var screenHeight = window.screen.height;
 var remthisChange = screenWidth/screenHeight;
 var mobileWidt = 100;
 
+
+
+
+
 function editVh() {
-  if (remthisChange>=1) {
+  if (remthisChange>=1)
     changeHeightOurScreen.style.height = screenHeight + "px";
-  }else{
+  else
     changeHeightOurScreen.style.height = mobileWidt + "vh";
-  }
 }
 
 window.addEventListener("load", editVh);
+
+
+
+
+
 
 function soWidthHeight() {
   if(remthisChange<1.7 && remthisChange>1){
@@ -179,28 +204,27 @@ function soWidthHeight() {
     dv.classList.add("ad-mb-wd-h");
     var trT =  document.getElementsByClassName("ad-mb-wd-h");
     for(var i = 0; i<trT.length; i++){
-      for(var j = 0; j<inHm.length; j++){
+      for(var j = 0; j<inHm.length; j++)
         trT[i].appendChild(inHm[j]);
-      }
     }
-    // for(var k = 0; k<trT.length; k++)
-      // trT[k].style.background = "url(./background-img/section_1/main.png)";
-  }else if(remthisChange<1){
+  }
+  else if(remthisChange<1){
     main01.removeChild(pomPomMainPage);
     var dv = document.createElement("div");
     homeP.prepend(dv);
     dv.classList.add("ad-mb-wd-h_2");
     var trT =  document.getElementsByClassName("ad-mb-wd-h_2");
     for(var i = 0; i<trT.length; i++){
-      for(var j = 0; j<inHm.length; j++){
+      for(var j = 0; j<inHm.length; j++)
         trT[i].appendChild(inHm[j]);
-      }
     }
-
   }
 }
 
 window.addEventListener("load", soWidthHeight);
+
+
+
 
 
 function leftRightAnimateMainImg() {
@@ -209,10 +233,15 @@ function leftRightAnimateMainImg() {
 
 window.addEventListener("load", leftRightAnimateMainImg);
 
+
+
+
+
+
 function setWidth() {
-  if(remthisChange>=1){
+  if(remthisChange>=1)
     editWimageSection_2.style.width = screenWidth/3 + "px";
-  }else{
+  else{
     redise.style.flexDirection = "column";
     abHolo.style.paddingTop = "10px";
     btnHoloSect.style.marginTop = "5px";
@@ -223,6 +252,9 @@ function setWidth() {
 window.addEventListener("load", setWidth);
 
 
+
+
+
 function slideWidthHeightBtn() {
   if(remthisChange>1.4){
     leftSlideBtn.style.width = screenWidth/12 + "px";
@@ -231,12 +263,14 @@ function slideWidthHeightBtn() {
     rightSlideBtn.style.width = screenWidth/12 + "px";
     rightSlideBtn.style.height = screenHeight/6 + "px";
   }
-  // для прелоадера, а точнее для рута,
-  // раскрываю рут => дизейблю прелоад по лоаду и раскрываю че снизу
-  // window.addEventListener("load", animationMultitypeImg);
 }
 
 window.addEventListener("load", slideWidthHeightBtn);
+
+
+
+
+
 
 function slideWidthHeightBtnAdaptiveMobile() {
   if(remthisChange<1.4){
@@ -251,16 +285,22 @@ function slideWidthHeightBtnAdaptiveMobile() {
 window.addEventListener("load", slideWidthHeightBtnAdaptiveMobile);
 
 
+
+
+
+
 function sliderImgWidthHeight() {
   if(remthisChange>1.4){
     outOfClassEditImgSliderCurrent.style.width = screenWidth/3 + "px";
     outOfClassEditImgSliderCurrent.style.height = screenHeight/1.5 + "px";
   }
-// все че не ноут или монитор
-// другая формула под телефоны
 }
 
 window.addEventListener("load", sliderImgWidthHeight);
+
+
+
+
 
 
 function sliderImgWidthHeightAdaptiveMobile() {
@@ -273,23 +313,34 @@ function sliderImgWidthHeightAdaptiveMobile() {
 window.addEventListener("load", sliderImgWidthHeightAdaptiveMobile);
 
 
+
+
+
+
 function progressSlider_w() {
   var inf_img_slider = parseInt(outOfClassEditImgSliderCurrent.style.width);
-  for(var count = 0; count<progressSlider.length; count++){
+  for(var count = 0; count<progressSlider.length; count++)
     progressSlider[count].style.width = inf_img_slider/4 + "px";
-  }
 }
 
 window.addEventListener("load", progressSlider_w);
 
+
+
+
+
 function halfimgFix() {
   var inf_img_slider_half = parseInt(outOfClassEditImgSliderCurrent.style.width);
-  for(var count = 0; count<halfImgSlider.length; count++){
+  for(var count = 0; count<halfImgSlider.length; count++)
     halfImgSlider[count].style.width = inf_img_slider_half/2 + "px";
-  }
 }
 
 window.addEventListener("load", halfimgFix);
+
+
+
+
+
 
 
 function slidersAnimate() {
@@ -330,7 +381,19 @@ function rightMove(counter, imges) {
 //   }
 // }
 
+// rightSlideBtn.addEventListener("click", rightMove);
+
+// function leftMove(count, obj_imj) {
+//
+// }
+//
+// leftSlideBtn.addEventListener("click", leftMove);
+
 rightSlideBtn.addEventListener("click", rightMove);
+
+
+
+
 
 
 
@@ -375,11 +438,3 @@ function svgVirginColor() {
 }
 
 window.addEventListener("load", svgVirginColor);
-
-// rightSlideBtn.addEventListener("click", rightMove);
-
-// function leftMove(count, obj_imj) {
-//
-// }
-//
-// leftSlideBtn.addEventListener("click", leftMove);
