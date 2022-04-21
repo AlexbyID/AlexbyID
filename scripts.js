@@ -69,29 +69,60 @@ var wheelCounter = 0, bottomAnimateScroll = 0, topAnimateScroll = 0, swipeTransl
 function checkHide(e) {
   var delta = e.deltaY;
   console.log(delta);
+  console.log(changeSvgColorSelector);
   if(delta>0 && wheelCounter<adaptWidt.length){
-    wheelCounter++;
 
+    if(remthisChange>=1){
+      allCurrenPage[wheelCounter].classList.remove("ch-svg");
+      allCurrenPage[wheelCounter].style.filter = "invert(100%) sepia(0%) saturate(0%) hue-rotate(4deg) brightness(112%) contrast(101%)";
+    }
+    else{
+      allCurrenPage[wheelCounter].classList.remove("ch-svg_2");
+      allCurrenPage[wheelCounter].style.filter = "invert(100%) sepia(0%) saturate(0%) hue-rotate(4deg) brightness(112%) contrast(101%)";
+    }
+
+    wheelCounter++;
     if(remthisChange>=1){
       bottomAnimateScroll = -screenHeight*wheelCounter;
       swipeTranslate = 0;
+
+      allCurrenPage[wheelCounter].style.cssText = "";
+      allCurrenPage[wheelCounter].classList.add("ch-svg");
+
       changeHeightOurScreen.style.transform = "translate3d(" + " 0px," + bottomAnimateScroll + "px," + " 0px)";
       changeHeightOurScreen.style.transition = "all 0.6s ease-in-out 0s";
       console.log(bottomAnimateScroll + " ", wheelCounter);
     }else{
       bottomAnimateScroll = -mobileWidt*wheelCounter;
       swipeTranslate = 0;
+
+      allCurrenPage[wheelCounter].style.cssText = "";
+      allCurrenPage[wheelCounter].classList.add("ch-svg_2");
+
       changeHeightOurScreen.style.transform = "translate3d(" + " 0vh," + bottomAnimateScroll + "vh," + " 0vh)";
       changeHeightOurScreen.style.transition = "all 0.6s ease-in-out 0s";
       console.log(bottomAnimateScroll);
     }
   }
   else if(delta<0 && wheelCounter!=0){
+
+    if(remthisChange>=1){
+      allCurrenPage[wheelCounter].classList.remove("ch-svg");
+      allCurrenPage[wheelCounter].style.filter = "invert(100%) sepia(0%) saturate(0%) hue-rotate(4deg) brightness(112%) contrast(101%)";
+    }
+    else{
+      allCurrenPage[wheelCounter].classList.remove("ch-svg_2");
+      allCurrenPage[wheelCounter].style.filter = "invert(100%) sepia(0%) saturate(0%) hue-rotate(4deg) brightness(112%) contrast(101%)";
+    }
     wheelCounter--;
     if(remthisChange>=1){
       topAnimateScroll = bottomAnimateScroll + screenHeight + swipeTranslate;
       swipeTranslate = 0;
       bottomAnimateScroll = topAnimateScroll;
+
+      allCurrenPage[wheelCounter].style.cssText = "";
+      allCurrenPage[wheelCounter].classList.add("ch-svg");
+
       changeHeightOurScreen.style.transform = "translate3d(" + " 0px," + topAnimateScroll + "px," + " 0px)";
       changeHeightOurScreen.style.transition = "all 0.6s ease-in-out 0s";
       console.log(topAnimateScroll + " ", wheelCounter);
@@ -99,6 +130,9 @@ function checkHide(e) {
       topAnimateScroll = bottomAnimateScroll + mobileWidt + swipeTranslate;
       swipeTranslate = 0;
       bottomAnimateScroll = topAnimateScroll;
+
+      allCurrenPage[wheelCounter].style.cssText = "";
+      allCurrenPage[wheelCounter].classList.add("ch-svg_2");
 
       changeHeightOurScreen.style.transform = "translate3d(" + " 0vh," + topAnimateScroll + "vh," + " 0vh)";
       changeHeightOurScreen.style.transition = "all 0.6s ease-in-out 0s";
@@ -114,19 +148,15 @@ hideRoot.addEventListener("wheel", checkHide);
 
 
 function animateTrthis() {
-  console.log("work");
-  for(var i = 0; i <checkHomeMainHref.length; i++){
-    var newstr = checkHomeMainHref[i].getAttribute("href").replace(/#/, "");
-    for(var j = 0; j<adaptWidt.length; j++){
-      console.log(adaptWidt[j].getAttribute("class").includes(newstr));
-      if((adaptWidt[j].getAttribute("class").includes(newstr))){
-        var trickCount = j;
-        checkHomeMainHref[i].onclick = function clickTranslate() {
-          wheelCounter = trickCount;
-          // var newHeight = window.screen.height;
+  // console.log("work");
+  for(let i = 0; i <checkHomeMainHref.length; i++){
+    let newstr = checkHomeMainHref[i].getAttribute("href").replace(/#/, "");
+      checkHomeMainHref[i].onclick = function clickTranslate() {
+        for(var j = 0; j<adaptWidt.length; j++){
+          if((adaptWidt[j].getAttribute("class").includes(newstr))){
+          wheelCounter = j;
           if(remthisChange>=1){
             swipeTranslate = -screenHeight*wheelCounter;
-            console.log(wheelCounter);
             changeHeightOurScreen.style.transform = "translate3d(" + " 0px," + swipeTranslate + "px," + " 0px)";
             changeHeightOurScreen.style.transition = "all 0.6s ease-in-out 0s";
           }else{
@@ -159,18 +189,24 @@ window.addEventListener("beforeunload", onloadStylePutWheel);
 
 
 
-// function thisPageBtnNav() {
-//   var thisLoc = document.location.href;
-//   for(var i = 0; i<checkHomeMainHref.length; i++){
-//
-//     if(thisLoc[i].includes(checkHomeMainHref[i].getAttribute("href"))==false && remthisChange>=1)
-//       allCurrenPage[i].classList.add("ch-svg");
-//     else if(thisLoc[i].includes(checkHomeMainHref[i].getAttribute("href"))==false && remthisChange<1)
-//       allCurrenPage[i].classList.add("ch-svg_2");
-//   }
-// }
-//
-// window.addEventListener("load", thisPageBtnNav);
+function thisPageBtnNav() {
+  if(remthisChange>=1){
+    if(wheelCounter==0)
+      allCurrenPage[0].classList.add("ch-svg");
+  }else{
+    if(wheelCounter==0)
+      allCurrenPage[0].classList.add("ch-svg_2");
+  }
+}
+
+
+// if(thisLoc[i].includes(checkHomeMainHref[i].getAttribute("href"))==false && remthisChange>=1)
+//   allCurrenPage[i].classList.add("ch-svg");
+// else if(thisLoc[i].includes(checkHomeMainHref[i].getAttribute("href"))==false && remthisChange<1)
+//   allCurrenPage[i].classList.add("ch-svg_2");
+window.addEventListener("load", thisPageBtnNav);
+
+
 
 
 
