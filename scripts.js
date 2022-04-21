@@ -71,6 +71,7 @@ function checkHide(e) {
   console.log(delta);
   if(delta>0 && wheelCounter<adaptWidt.length){
     wheelCounter++;
+
     if(remthisChange>=1){
       bottomAnimateScroll = -screenHeight*wheelCounter;
       swipeTranslate = 0;
@@ -107,6 +108,8 @@ function checkHide(e) {
 }
 
 hideRoot.addEventListener("wheel", checkHide);
+
+
 
 
 
@@ -421,10 +424,14 @@ for(let counterI = 0; counterI<allHoverBtn.length; counterI++){
   allHoverBtn[counterI].onmousedown = function () {
     if(allHoverBtn[counterI].classList=="btn-nav ch-svg" || allHoverBtn[counterI].classList=="btn-nav ch-svg_2");
     else{
-      if(remthisChange>=1)
+      if(remthisChange>=1){
+        allHoverBtn[counterI].style.cssText = "";
         allHoverBtn[counterI].classList.add("hover-filtr");
-      else
+      }
+      else{
+        allHoverBtn[counterI].style.cssText = "";
         allHoverBtn[counterI].classList.add("hover-filtr_2");
+      }
     }
   }
 }
