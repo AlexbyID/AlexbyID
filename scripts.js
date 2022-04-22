@@ -25,6 +25,7 @@ let adaptWidt = document.querySelectorAll(".home-wrap > section");
 let btnHoloSect = document.querySelector(".btn_holo-section_2");
 let outOfClassEditImgSliderCurrent = document.querySelector(".slider-img");
 let allCurrenPage = document.querySelectorAll(".btn-nav");
+let giveMeCircle = document.querySelectorAll(".icon-nav-item");
 
 
 let allHoverBtn = document.querySelectorAll(".btn-nav")
@@ -68,16 +69,17 @@ var wheelCounter = 0, bottomAnimateScroll = 0, topAnimateScroll = 0, swipeTransl
 
 function checkHide(e) {
   var delta = e.deltaY;
-  console.log(delta);
-  console.log(changeSvgColorSelector);
   if(delta>0 && wheelCounter<adaptWidt.length){
+    console.log(delta);
 
     if(remthisChange>=1){
       allCurrenPage[wheelCounter].classList.remove("ch-svg");
+      giveMeCircle[wheelCounter].style.display = "none";
       allCurrenPage[wheelCounter].style.filter = "invert(100%) sepia(0%) saturate(0%) hue-rotate(4deg) brightness(112%) contrast(101%)";
     }
     else{
       allCurrenPage[wheelCounter].classList.remove("ch-svg_2");
+      giveMeCircle[wheelCounter].style.display = "none";
       allCurrenPage[wheelCounter].style.filter = "invert(100%) sepia(0%) saturate(0%) hue-rotate(4deg) brightness(112%) contrast(101%)";
     }
 
@@ -87,6 +89,7 @@ function checkHide(e) {
       swipeTranslate = 0;
 
       allCurrenPage[wheelCounter].style.cssText = "";
+      giveMeCircle[wheelCounter].style.display = "flex";
       allCurrenPage[wheelCounter].classList.add("ch-svg");
 
       changeHeightOurScreen.style.transform = "translate3d(" + " 0px," + bottomAnimateScroll + "px," + " 0px)";
@@ -97,6 +100,7 @@ function checkHide(e) {
       swipeTranslate = 0;
 
       allCurrenPage[wheelCounter].style.cssText = "";
+      giveMeCircle[wheelCounter].style.display = "flex";
       allCurrenPage[wheelCounter].classList.add("ch-svg_2");
 
       changeHeightOurScreen.style.transform = "translate3d(" + " 0vh," + bottomAnimateScroll + "vh," + " 0vh)";
@@ -108,10 +112,12 @@ function checkHide(e) {
 
     if(remthisChange>=1){
       allCurrenPage[wheelCounter].classList.remove("ch-svg");
+      giveMeCircle[wheelCounter].style.display = "none";
       allCurrenPage[wheelCounter].style.filter = "invert(100%) sepia(0%) saturate(0%) hue-rotate(4deg) brightness(112%) contrast(101%)";
     }
     else{
       allCurrenPage[wheelCounter].classList.remove("ch-svg_2");
+      giveMeCircle[wheelCounter].style.display = "none";
       allCurrenPage[wheelCounter].style.filter = "invert(100%) sepia(0%) saturate(0%) hue-rotate(4deg) brightness(112%) contrast(101%)";
     }
     wheelCounter--;
@@ -121,6 +127,7 @@ function checkHide(e) {
       bottomAnimateScroll = topAnimateScroll;
 
       allCurrenPage[wheelCounter].style.cssText = "";
+      giveMeCircle[wheelCounter].style.display = "flex";
       allCurrenPage[wheelCounter].classList.add("ch-svg");
 
       changeHeightOurScreen.style.transform = "translate3d(" + " 0px," + topAnimateScroll + "px," + " 0px)";
@@ -132,6 +139,7 @@ function checkHide(e) {
       bottomAnimateScroll = topAnimateScroll;
 
       allCurrenPage[wheelCounter].style.cssText = "";
+      giveMeCircle[wheelCounter].style.display = "flex";
       allCurrenPage[wheelCounter].classList.add("ch-svg_2");
 
       changeHeightOurScreen.style.transform = "translate3d(" + " 0vh," + topAnimateScroll + "vh," + " 0vh)";
@@ -157,10 +165,20 @@ function animateTrthis() {
           wheelCounter = j;
           if(remthisChange>=1){
             swipeTranslate = -screenHeight*wheelCounter;
+
+            allCurrenPage[0].classList.remove("ch-svg");
+            giveMeCircle[0].style.display = "none";
+            allCurrenPage[0].style.filter = "invert(100%) sepia(0%) saturate(0%) hue-rotate(4deg) brightness(112%) contrast(101%)";
+
             changeHeightOurScreen.style.transform = "translate3d(" + " 0px," + swipeTranslate + "px," + " 0px)";
             changeHeightOurScreen.style.transition = "all 0.6s ease-in-out 0s";
           }else{
             swipeTranslate = -mobileWidt*wheelCounter;
+
+            allCurrenPage[0].classList.remove("ch-svg_2");
+            giveMeCircle[0].style.display = "none";
+            allCurrenPage[0].style.filter = "invert(100%) sepia(0%) saturate(0%) hue-rotate(4deg) brightness(112%) contrast(101%)";
+
             changeHeightOurScreen.style.transform = "translate3d(" + " 0vh," + swipeTranslate + "vh," + " 0vh)";
             changeHeightOurScreen.style.transition = "all 0.6s ease-in-out 0s";
           }
@@ -441,20 +459,28 @@ for(let counterI = 0; counterI<allHoverBtn.length; counterI++){
     if(allHoverBtn[counterI].classList=="btn-nav ch-svg" || allHoverBtn[counterI].classList=="btn-nav ch-svg_2");
     else{
       allHoverBtn[counterI].style.cssText = "";
-      if(remthisChange>=1)
+      if(remthisChange>=1){
         allHoverBtn[counterI].classList.add("hover-filtr");
-      else
+        giveMeCircle[counterI].style.display = "flex";
+      }
+      else{
+        giveMeCircle[counterI].style.display = "flex";
         allHoverBtn[counterI].classList.add("hover-filtr_2");
+      }
     }
   }
   allHoverBtn[counterI].onmouseout = function () {
     if(allHoverBtn[counterI].classList=="btn-nav ch-svg" || allHoverBtn[counterI].classList=="btn-nav ch-svg_2");
     else{
       allHoverBtn[counterI].style.filter = "invert(100%) sepia(0%) saturate(0%) hue-rotate(4deg) brightness(112%) contrast(101%)";
-      if(remthisChange>=1)
+      if(remthisChange>=1){
         allHoverBtn[counterI].classList.remove("hover-filtr");
-      else
+        giveMeCircle[counterI].style.display = "none";
+      }
+      else{
         allHoverBtn[counterI].classList.remove("hover-filtr_2");
+        giveMeCircle[counterI].style.display = "none";
+      }
     }
   }
   allHoverBtn[counterI].onmousedown = function () {
@@ -462,10 +488,12 @@ for(let counterI = 0; counterI<allHoverBtn.length; counterI++){
     else{
       if(remthisChange>=1){
         allHoverBtn[counterI].style.cssText = "";
+        giveMeCircle[counterI].style.display = "flex";
         allHoverBtn[counterI].classList.add("hover-filtr");
       }
       else{
         allHoverBtn[counterI].style.cssText = "";
+        giveMeCircle[counterI].style.display = "flex";
         allHoverBtn[counterI].classList.add("hover-filtr_2");
       }
     }
